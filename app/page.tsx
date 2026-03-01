@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { getComments, addComment } from "@/server/comments-fuctions";
 import { getTracks } from "@/server/get-files";
 import { uploadTrack, deleteTrack } from "@/server/upload-files";
+import getsenha from "@/server/get-senha";
 
 // --- Tipos ---
 type Track = {
@@ -109,7 +110,14 @@ export default function MusicApp() {
   }
   const [ok, setOk] = useState(false);
   const [input, setInput] = useState("");
-  const SENHA = process.env.NEXT_PUBLIC_SENHA;
+  async function verificarSenha() {
+  const senha = await getsenha();
+  if (input === senha.toString()) {
+    setOk(true);
+  } else {
+    alert("Senha incorreta");
+  }
+}
   if (!ok) return (
     <div className="min-h-screen flex items-center justify-center bg-zinc-950">
       <div className="flex flex-col gap-3 w-72">
@@ -122,11 +130,11 @@ export default function MusicApp() {
           className="bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white text-sm focus:outline-none"
         />
         <button
-          onClick={() => input === SENHA ? setOk(true) : alert("Senha incorreta")}
-          className="bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg text-sm"
-        >
-          Entrar
-        </button>
+  onClick={verificarSenha}
+  className="bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg text-sm"
+>
+  Entrar
+</button>
       </div>
     </div>
   );
