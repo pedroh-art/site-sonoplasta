@@ -112,6 +112,7 @@ export default function MusicApp() {
   const [input, setInput] = useState("");
   async function verificarSenha() {
   const senha = await getsenha();
+  
   if (input === senha.toString()) {
     setOk(true);
   } else {
